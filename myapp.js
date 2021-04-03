@@ -1,19 +1,43 @@
-InboxSDK.loadScript("https://unpkg.com/react@17/umd/react.development.js"),
-InboxSDK.loadScript("https://unpkg.com/react-dom@17/umd/react-dom.development.js"),
-InboxSDK.loadScript("https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js")
-
 const templateIframeId = 'templateIframe';
-const reactAppUrl = 'https://hardcore-tesla-72d935.netlify.app'
+const modalTitle = 'Personal Snippets';
+
+let userOptions = {
+  preferredDisplay: 'mole',
+  runningLocally: false,
+};
+
+function fetchPreferences() {
+  chrome.storage.sync.get({
+    preferredDisplay: 'mole',
+    runningLocally: false
+  }, function(items) {
+    userOptions.preferredDisplay = items.preferredDisplay;
+    userOptions.runningLocally = items.runningLocally;
+  });
+}
+
+const buildAppUrlFrom = (preferences = {}) => {
+  if (preferences.runningLocally) return "http://localhost:3000"
+
+  return "https://hardcore-tesla-72d935.netlify.app";
+};
+
+const buildWidget = (sdk, options) => {
+  return {
+    mole: function() { return sdk.Widgets.showMoleView(options) },
+    drawer: function() { return sdk.Widgets.showDrawerView(options) },
+    modal: function() { return sdk.Widgets.showModalView(options) },
+  }
+};
 
 InboxSDK.load(2, 'sdk_helpmetype_65569f585b').then(sdk => {
+  fetchPreferences();
+
   sdk.Compose.registerComposeViewHandler((composeView) => {
     window.addEventListener('message', (e) => {
-      if (e.origin !== reactAppUrl) return
+      if (e.origin !== buildAppUrlFrom(userOptions)) return
 
-      console.log(`Received message: ${e.data}`);
       composeView.insertTextIntoBodyAtCursor(e.data);
-      document.getElementsByClassName('inboxsdk__modal_content_no_buttons')[0].remove();
-      document.getElementsByClassName('inboxsdk__modal_overlay')[0].remove();
     });
 
     composeView.addButton({
@@ -21,18 +45,21 @@ InboxSDK.load(2, 'sdk_helpmetype_65569f585b').then(sdk => {
       iconUrl: 'https://static.thenounproject.com/png/365779-200.png',
       onClick: event => {
         const el = document.createElement("iframe");
-        el.setAttribute("src", reactAppUrl);
+        el.setAttribute("src", buildAppUrlFrom(userOptions));
         el.id = templateIframeId;
         el.style.width = "250px";
         el.style.height = "480px";
         el.style.border = "none";
 
-        sdk.Widgets.showModalView({
+        let widgetOptions = {
           el: el,
           showCloseButton: true,
-          title: 'Personal Snippets',
-        })
+          title: modalTitle,
+        }
+
+        buildWidget(sdk, widgetOptions)[userOptions.preferredDisplay]();
       },
     });
   });
 });
+

@@ -3,20 +3,19 @@
   "name": "HelpMeType",
   "version": "1.0",
   "permissions": [
+    "storage",
     "https://mail.google.com/",
-    "https://inbox.google.com/",
-    "https://unpkg.com/react@17/umd/react.development.js",
-    "https://unpkg.com/react-dom@17/umd/react-dom.development.js",
-    "https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"
+    "https://inbox.google.com/"
   ],
   "content_scripts": [
     {
       "matches": ["https://mail.google.com/*", "https://inbox.google.com/*"],
-      "js": ["inboxsdk.js", "myapp.js"]
+      "js": ["inboxsdk.js", "myapp.js", "options.js"]
     }
   ],
   "web_accessible_resources": [
     "template-icon.png"
   ],
-  "icons": {"128": "template-icon.png"}
+  "icons": {"128": "template-icon.png"},
+  "options_page": "options.html"
 }
