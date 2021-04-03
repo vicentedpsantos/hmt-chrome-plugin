@@ -7,14 +7,15 @@ const reactAppUrl = 'https://hardcore-tesla-72d935.netlify.app'
 
 InboxSDK.load(2, 'sdk_helpmetype_65569f585b').then(sdk => {
   sdk.Compose.registerComposeViewHandler((composeView) => {
-      window.addEventListener('message', (e) => {
-        if (e.origin !== reactAppUrl) return
+    window.addEventListener('message', (e) => {
+      if (e.origin !== reactAppUrl) return
 
-        console.log(`Received message: ${e.data}`);
-        composeView.insertTextIntoBodyAtCursor(e.data);
-        document.getElementsByClassName('inboxsdk__modal_content_no_buttons')[0].remove();
-        document.getElementsByClassName('inboxsdk__modal_overlay')[0].remove();
-      });
+      console.log(`Received message: ${e.data}`);
+      composeView.insertTextIntoBodyAtCursor(e.data);
+      document.getElementsByClassName('inboxsdk__modal_content_no_buttons')[0].remove();
+      document.getElementsByClassName('inboxsdk__modal_overlay')[0].remove();
+    });
+
     composeView.addButton({
       title: "Load from template",
       iconUrl: 'https://static.thenounproject.com/png/365779-200.png',
