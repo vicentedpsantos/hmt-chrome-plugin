@@ -1,10 +1,54 @@
 <!DOCTYPE html>
 <html>
-<head><title>My Test Extension Options</title></head>
+<head>
+  <title>
+    HelpMeType settings
+  </title>
+  <style>
+    * {
+      font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+    }
+
+    .option-box {
+      margin: 1rem;
+    }
+
+    #save {
+      margin: 0.2rem;
+      vertical-alignment: middle;
+      cursor: pointer;
+      display: inline-block;
+      border: 1px solid #dcdcdc;
+      border-radius: 2px;
+      font-size: 11px;
+      font-weight: bold;
+      text-align: center;
+      height: 27px;
+      line-height: 27px;
+      min-width: 54px;
+      padding: 0 8px;
+      text-decoration: none;
+      background-color: #4D90FE;
+      background-image: linear-gradient(top,#4d90fe,#4787ed);
+      border: 1px solid #3079ED;
+      color: white;
+
+      &:hover {
+        border: 1px solid #2F5BB7;
+        background-color: #357AE8;
+        background-image: linear-gradient(top,#4d90fe,#357ae8);
+        box-shadow: 0 1px 1px rgba(0,0,0,.1);
+      }
+    }
+  </style>
+</head>
 <body>
 
 <div>
-  Preferred Display:
+  <h1>HelpMeType settings</h1>
+</div>
+<div class="option-box">
+  <span>Preferred Display:</span>
   <select id="display">
    <option value="mole">Mole</option>
    <option value="modal">Modal</option>
@@ -12,10 +56,10 @@
   </select>
 </div>
 
-<div>
+<div class="option-box">
+  <span>Run iframe provider locally?</span>
   <label>
     <input type="checkbox" id="local">
-    I want to run my iframe provider locally.
   </label>
 </div>
 
